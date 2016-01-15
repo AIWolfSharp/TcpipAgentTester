@@ -28,5 +28,6 @@ public class MyServerStarter implements Runnable {
 		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
 		game.setRand(new Random());
 		game.start();
+		gameServer.close();
 	}
 }
