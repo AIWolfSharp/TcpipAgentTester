@@ -38,7 +38,7 @@ public class TcpipAgentTester {
 				}
 			}
 		}
-		if (port < 0 || clsName == null) {
+		if (port < 0) {
 			usage();
 			System.exit(-1);
 		}
@@ -66,8 +66,12 @@ public class TcpipAgentTester {
 			Thread t = new Thread(r);
 			t.start();
 
-			TcpipClient client = new TcpipClient("localhost", port, requestRole);
-			client.connect((Player) Class.forName(clsName).newInstance());
+			TcpipClient client;
+			// If className is null, then wait a connection from the outside.
+			if (clsName != null) {
+				client = new TcpipClient("localhost", port, requestRole);
+				client.connect((Player) Class.forName(clsName).newInstance());
+			}
 			for (int i = 0; i < playerNum - 1; i++) {
 				client = new TcpipClient("localhost", port, null);
 				client.connect(new RandomPlayer());
