@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import org.aiwolf.common.data.Player;
@@ -66,15 +68,32 @@ public class TcpipAgentTester {
 			Thread t = new Thread(r);
 			t.start();
 
+			// At first, fill with RandomPlayers so that only the requestRole is left.
 			TcpipClient client;
+			ArrayList<Role> roleList = new ArrayList<Role>();
+			for (Role role : Role.values()) {
+				if (role == Role.FREEMASON) {
+					continue;
+				}
+				int i = 0;
+				if (role == requestRole) {
+					i = 1;
+				}
+				while (i < gameSetting.getRoleNumMap().get(role)) {
+					roleList.add(role);
+					i++;
+				}
+			}
+			Collections.shuffle(roleList);
+			for (Role role : roleList) {
+				client = new TcpipClient("localhost", port, role);
+				client.connect(new RandomPlayer());
+			}
+
 			// If className is null, then wait a connection from the outside.
 			if (clsName != null) {
-				client = new TcpipClient("localhost", port, requestRole);
-				client.connect((Player) Class.forName(clsName).newInstance());
-			}
-			for (int i = 0; i < playerNum - 1; i++) {
 				client = new TcpipClient("localhost", port, null);
-				client.connect(new RandomPlayer());
+				client.connect((Player) Class.forName(clsName).newInstance());
 			}
 
 			t.join();
