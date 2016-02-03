@@ -21,7 +21,7 @@ import org.aiwolf.server.net.TcpipServer;
 public class TcpipAgentTester {
 
 	public static void usage() {
-		System.err.println("Usage:" + TcpipAgentTester.class + " -c clientClass (-h host) (-p port)");
+		System.err.println("Usage:" + TcpipAgentTester.class + " [-c clientClass] [-h host] [-p port]");
 	}
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, InterruptedException {
@@ -113,10 +113,10 @@ public class TcpipAgentTester {
 				}
 			}
 			gameServer.close();
-		} else { // Remote mode
+		} else { // Client mode
 			if (clsName == null) {
 				usage();
-				System.err.println("Player class must be specified in Remote mode.");
+				System.err.println("Player class must be specified in client mode.");
 				System.exit(-1);
 			}
 			TcpipClient client = new TcpipClient(hostName, port, null);

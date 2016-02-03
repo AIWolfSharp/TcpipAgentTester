@@ -6,7 +6,7 @@ TCP/IP接続版(0.3.x対応) AgentTester
 ### 使用法
 
   ```
-  -p port -h host -c clientClass
+  [-p port] [-h host] [-c clientClass]
   ```
     
   　　port : ポート番号（デフォルトは10000）
