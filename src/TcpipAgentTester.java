@@ -26,7 +26,7 @@ public class TcpipAgentTester {
 
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, InterruptedException {
 		int port = 10000;
-		String hostName = "localhost";
+		String hostName = null;
 		String clsName = null;
 		int playerNum = 15;
 
@@ -49,7 +49,7 @@ public class TcpipAgentTester {
 			System.exit(-1);
 		}
 
-		if (hostName.equals("localhost")) { // Standalone mode
+		if (hostName == null) { // Standalone mode
 
 			System.out.printf("Start AIWolf Server port:%d playerNum:%d\n", port, playerNum);
 			GameSetting gameSetting = GameSetting.getDefaultGame(playerNum);
@@ -69,16 +69,16 @@ public class TcpipAgentTester {
 			Thread t = new Thread(r);
 			t.start();
 
-			// If className is null, then wait a connection from the outside.
-			if (clsName != null) {
-				TcpipClient client = new TcpipClient("localhost", port, null);
-				client.connect((Player) Class.forName(clsName).newInstance());
-			}
-
 			ArrayList<TcpipClient> randomPlayerList = new ArrayList<TcpipClient>();
 			for (int i = 0; i < 14; i++) {
 				randomPlayerList.add(new TcpipClient("localhost", port, null));
 				randomPlayerList.get(i).connect(new RandomPlayer());
+			}
+
+			// Wait a connection from outside when class name is not specified.
+			if (clsName != null) {
+				TcpipClient client = new TcpipClient("localhost", port, null);
+				client.connect((Player) Class.forName(clsName).newInstance());
 			}
 
 			t.join();
@@ -88,7 +88,7 @@ public class TcpipAgentTester {
 					continue;
 				}
 
-				// At first, fill with RandomPlayers so that only the requestRole is left.
+				// Fill with RandomPlayers so that only the requestRole is left.
 				Iterator<TcpipClient> it = randomPlayerList.iterator();
 				for (Role role : Role.values()) {
 					if (role == Role.FREEMASON) {
@@ -119,7 +119,7 @@ public class TcpipAgentTester {
 				System.err.println("Player class must be specified in Remote mode.");
 				System.exit(-1);
 			}
-			TcpipClient client = new TcpipClient("localhost", port, null);
+			TcpipClient client = new TcpipClient(hostName, port, null);
 			client.connect((Player) Class.forName(clsName).newInstance());
 		}
 	}
