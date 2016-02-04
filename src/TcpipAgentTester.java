@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import org.aiwolf.common.data.Player;
 import org.aiwolf.common.data.Role;
@@ -107,9 +106,7 @@ public class TcpipAgentTester {
 				}
 
 				for (int i = 0; i < 10; i++) {
-					AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
-					game.setRand(new Random());
-					game.start();
+					new AIWolfGame(gameSetting, gameServer).start();
 				}
 			}
 			gameServer.close();
