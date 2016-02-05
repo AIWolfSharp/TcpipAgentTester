@@ -20,7 +20,7 @@ import org.aiwolf.server.net.TcpipServer;
 public class TcpipAgentTester {
 
 	public static void usage() {
-		System.err.println("Usage:" + TcpipAgentTester.class + " [-c clientClass] [-h host] [-p port]");
+		System.err.println("Usage:" + TcpipAgentTester.class + " [-c clientClass] [-h host] [-p port] [-g gameNum]");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -29,6 +29,7 @@ public class TcpipAgentTester {
 		String hostName = null;
 		String clsName = null;
 		int playerNum = 15;
+		int gameNum = 10;
 
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].startsWith("-")) {
@@ -41,12 +42,15 @@ public class TcpipAgentTester {
 				} else if (args[i].equals("-h")) {
 					i++;
 					hostName = args[i];
+				} else if (args[i].equals("-g")) {
+					i++;
+					gameNum = Integer.parseInt(args[i]);
 				}
 			}
 		}
 		if (port < 0) {
 			usage();
-			System.exit(-1);
+			System.exit(0);
 		}
 
 		if (hostName == null) { // Standalone mode
@@ -106,7 +110,7 @@ public class TcpipAgentTester {
 					}
 				}
 
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < gameNum; i++) {
 					new AIWolfGame(gameSetting, gameServer).start();
 				}
 			}
@@ -115,10 +119,18 @@ public class TcpipAgentTester {
 			if (clsName == null) {
 				usage();
 				System.err.println("Player class must be specified in client mode.");
-				System.exit(-1);
+				System.exit(0);
 			}
 			TcpipClient client = new TcpipClient(hostName, port, null);
 			client.connect((Player) Class.forName(clsName).newInstance());
+			while (true) {
+				Thread.sleep(1000);
+				if (!client.isConnecting()) {
+					break;
+				}
+			}
 		}
+
+		System.exit(0);
 	}
 }
