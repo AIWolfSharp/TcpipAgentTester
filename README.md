@@ -6,14 +6,16 @@ TCP/IP接続版(0.3.x対応) AgentTester
 ### 使用法
 
   ```
-  [-p port] [-h host] [-c clientClass]
+  [-p port] [-h host] [-c clientClass] [-g gameNum]
   ```
-    
-  　　port : ポート番号（デフォルトは10000）
+
+port : ポート番号（デフォルトは10000）
+
+host : 接続先ホスト名．指定した場合汎用クライアントスターターとなります．
+
+clientClass : プレイヤークラス名．無指定の場合接続を待つサーバーとなります．
   
-  　　host : 接続先ホスト名．指定した場合汎用クライアントスターターとなります．
-  
-  　　clientClass : プレイヤークラス名．無指定の場合接続を待つサーバーとなります．
+gameNum : 役職ごとのゲーム回数（デフォルトは10回）
   
 ### 使用例
 
@@ -34,3 +36,7 @@ TCP/IP接続版(0.3.x対応) AgentTester
   ```
   java -jar TcpipAgentTester.jar -p 12345 -h foo.bar.baz -c org.aiwolf.client.base.smpl.SampleRoleAssignPlayer
   ```
+  
+### 注意点
+
+現在のところ，人狼知能プラットフォームの仕様のため，クライアントスターターはテスト終了後に強制終了する必要があります．
