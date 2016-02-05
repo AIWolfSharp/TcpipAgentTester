@@ -23,6 +23,7 @@ public class TcpipAgentTester {
 		System.err.println("Usage:" + TcpipAgentTester.class + " [-c clientClass] [-h host] [-p port]");
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, InterruptedException {
 		int port = 10000;
 		String hostName = null;
