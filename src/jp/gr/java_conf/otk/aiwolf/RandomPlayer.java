@@ -1,3 +1,4 @@
+package jp.gr.java_conf.otk.aiwolf;
 
 
 import java.util.Collections;

@@ -1,42 +1,49 @@
 # TcpipAgentTester
-TCP/IP接続版(0.3.x対応) AgentTester
-
-スタンドアロンテスター機能の他，テスト対象クライアントからの接続を待つサーバー機能と，サーバーに接続するだけの汎用クライアントスターター機能を実装しました．
+第1回大会で提供されたAgentTesterをTCP/IP接続に改造したものです．
+プレイヤーのインスタンスは初めに生成したものが最後まで使用されます．
+全役職についてランダムプレイヤーの中で複数回対戦を行い，
+Exception発生の可能性をチェックします．
 
 ### 使用法
 
   ```
-  [-p port] [-h host] [-c clientClass] [-g gameNum]
+  java -jar TcpipAgentTeseter.jar [-h] [-c clientClass] [-g gameNum] [-n playerNum] [-p port]
   ```
 
+-h オプションを与えるとUsageを出力します．
+
+clientClass : プレイヤークラス名．無指定の場合TCP/IP接続を待ちます．
+
+gameNum : 1役職あたりのゲーム数（デフォルトは10）
+
+playerNum : プレイヤー数（デフォルトは15）
+
 port : ポート番号（デフォルトは10000）
-
-host : 接続先ホスト名．指定した場合汎用クライアントスターターとなります．
-
-clientClass : プレイヤークラス名．無指定の場合接続を待つサーバーとなります．
-  
-gameNum : 役職ごとのゲーム回数（デフォルトは10回）
   
 ### 使用例
 
-  1. org.aiwolf.client.base.smpl.SampleRoleAssignPlayerのテスト
+  1. org.aiwolf.client.base.smpl.SampleRoleAssignPlayerのテスト.
+  
   
   ```
   java -jar TcpipAgentTester.jar -c org.aiwolf.client.base.smpl.SampleRoleAssignPlayer
   ```
   
-  1. 12345番ポートで待つテストサーバーの起動
+  1. 12345番ポートで接続を待ち，
   
   ```
   java -jar TcpipAgentTester.jar -p 12345
   ```
-  
-  1. ホストfoo.bar.baz上のサーバにポート12345番で接続
-  
+  公式ClientStarterで接続．
   ```
-  java -jar TcpipAgentTester.jar -p 12345 -h foo.bar.baz -c org.aiwolf.client.base.smpl.SampleRoleAssignPlayer
+  java -cp aiwolf-common.jar;aiwolf-client.jar;jsonic-1.3.10.jar org.aiwolf.common.bin.ClientStarter -h localhost -p 12345 -c org.aiwolf.client.base.smpl.SampleRoleAssignPlayer
   ```
   
-### 注意点
-
-現在のところ，人狼知能プラットフォームの仕様のため，クライアントスターターはテスト終了後に強制終了する必要があります．
+### その他
+  
+  ログ出力がうるさい場合はjavaのVM argumentでlogging.propertiesファイルを指定すると抑制されます．
+  
+  ```
+  java -Djava.util.logging.config.file=logging.properties -jar TcpipAgentTester.jar -p 12345
+  ```
+  
